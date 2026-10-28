@@ -1,0 +1,67 @@
+@import "tailwindcss";
+@import "basecoat-css";
+
+/* Paper size is chosen in the UI and injected as a dynamic `@page` rule by
+   src/app.rs. The margin below must stay in sync with PRINT_MARGIN_MM in
+   src/paper.rs. */
+@page {
+  margin: 10mm;
+}
+
+/* Stacked copies of the scale. Spacing is computed in Rust (COPY_GAP_MM)
+   and applied as inline margin-bottom on each wrapper — no CSS value to
+   keep in sync. */
+.scale-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  /* `min-h-screen` resolves against the page box, which is taller than the
+     printable area, so on its own it spills an empty second page. The tinted
+     background would keep the box alive even at zero content height. */
+  main {
+    min-height: 0 !important;
+    background: none !important;
+  }
+
+  /* The page wrapper is centred and padded for the screen; in print the
+     @page margin already provides the gutter, and its max-width (896px =
+     237mm) is narrower than the 277mm printable width. */
+  .print-page {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-area {
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    break-inside: avoid;
+  }
+
+  .print-area section {
+    padding: 0 !important;
+  }
+
+  /* Without this the scroll container clips a scale wider than the card. */
+  .print-area .overflow-x-auto {
+    overflow: visible !important;
+  }
+}

@@ -1,0 +1,6 @@
+Alte DIN 1451 Mittelschrift, Regular and Bold
+Copyright (c) 2017 by Peter Wiegel. All rights reserved.
+
+Licensed under the GNU General Public License and the SIL Open Font License.
+https://www.fsf.org/licenses/gpl.html
+https://scripts.sil.org/OFL

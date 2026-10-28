@@ -1,0 +1,102 @@
+[package]
+name = "custom-ruler"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos = { version = "0.8", features = ["csr"] }
+leptos_router = { version = "0.8", optional = true }
+leptos_meta = { version = "0.8" }
+axum = { version = "0.8", optional = true }
+console_error_panic_hook = { version = "0.1", optional = true }
+leptos_axum = { version = "0.8", optional = true }
+tokio = { version = "1", features = ["rt-multi-thread"], optional = true }
+wasm-bindgen = { version = "0.2", optional = true }
+js-sys = { version = "0.3", optional = true }
+web-sys = { version = "0.3", optional = true, features = [
+    "Blob",
+    "BlobPropertyBag",
+    "Document",
+    "Element",
+    "HtmlAnchorElement",
+    "HtmlElement",
+    "MessageEvent",
+    "Node",
+    "Url",
+    "Window",
+    "Worker",
+    "WorkerOptions",
+    "WorkerType",
+] }
+
+[features]
+hydrate = [
+    "leptos/hydrate",
+    "dep:leptos_router",
+    "dep:console_error_panic_hook",
+    "dep:wasm-bindgen",
+    "dep:js-sys",
+    "dep:web-sys",
+]
+ssr = [
+    "dep:axum",
+    "dep:tokio",
+    "dep:leptos_axum",
+    "dep:leptos_router",
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+]
+
+# Size-optimized profile for the WASM bundle in release mode
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[package.metadata.leptos]
+# The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle
+output-name = "custom-ruler"
+
+# The site root folder is where cargo-leptos generate all output
+site-root = "target/site"
+
+# The site-root relative folder where all compiled output (JS, WASM and CSS) is written
+site-pkg-dir = "pkg"
+
+# The source CSS file (SCSS compiled by dart-sass)
+# style-file = "style/main.scss"
+
+# The tailwind input file.
+#
+# Optional, Activates the tailwind build
+tailwind-input-file = "style/tailwind.css"
+
+# The tailwind config file.
+#
+# Optional, defaults to "tailwind.config.js" which if is not present
+# is generated for you
+tailwind-config-file = "tailwind.config.js"
+
+# Assets source dir. All files found here will be copied and synchronized to site-root
+assets-dir = "public"
+
+# The IP and port where the server serves the content
+site-addr = "127.0.0.1:3000"
+
+# The port to use for automatic reload monitoring
+reload-port = 3001
+
+# The features to use when compiling the bin target
+bin-features = ["ssr"]
+
+# The features to use when compiling the lib target
+lib-features = ["hydrate"]
+
+# The profile to use for the lib target when compiling for release
+lib-profile-release = "wasm-release"
